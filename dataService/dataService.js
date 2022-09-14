@@ -11,7 +11,6 @@ async function insert(request) {
   
   const mongoId = await mongo.insertOne(req);
 
-  // insert into postgres
 }
 
 
