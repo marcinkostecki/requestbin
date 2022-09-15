@@ -21,7 +21,11 @@ app.get("/bins", async (request, response) => {
   // const ip = request.headers['x-forwarded-for'];
   const ip = request.ip;
   const bins = await dataService.getBinsFromIp(ip);
-  response.status(200).json(bins);
+  if (bins.length > 0) {
+    response.status(200).json(bins);
+  } else {
+    response.status(404).send();
+  }
 });
 
 //Put request in the bin
