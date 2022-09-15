@@ -5,7 +5,7 @@ INSERT INTO bins(url, ip_address) VALUES
 ('www.epofallon.com', '1.2.43.556.0'),
 ('www.nino.com', '1.2.3.5555.33');
 
-INSERT INTO requests(mongo_id, bin_id) VALUES
+INSERT INTO requests(bin_id, mongo_id) VALUES
 (1, '123456'),
 (1, '234567'),
 (1, '345678'),

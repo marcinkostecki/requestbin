@@ -16,9 +16,13 @@ async function insertOne(req) {
   return id.toString();
 }
 
+function deleteOne(id) {
+  return reqModel.findByIdAndDelete(id);
+}
+
 function readOne(id) {
   return reqModel.findById(id);
 }
 
 
-module.exports = { insertOne, readOne };
+module.exports = { insertOne, readOne, deleteOne };
