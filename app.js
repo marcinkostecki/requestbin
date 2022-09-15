@@ -49,11 +49,12 @@ app.get("/bins/:binId", async (request, response) => {
 
   try {
     const reqs = await dataService.getRequestsFromBin(binId)
-    if (reqs.length > 0) {
-      response.status(200).json(reqs);
-    } else {
-      response.status(404).send()
-    }
+    console.log(reqs);
+    // if (reqs.length > 0) {
+    response.status(200).json(reqs);
+    // } else {
+    //   response.status(404).json('whooopps');
+    // }
   } catch (err) {
     console.log("In binID", err.message);
     response.status(500).json({ error: err.message });
