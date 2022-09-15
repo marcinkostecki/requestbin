@@ -2,14 +2,13 @@
 
 
 ## `GET "/bins"`
-returns an array of public bin IDs for the requester's IP Address. public bin IDs are strings. response is always 200. if no bins are found for the requester's IP, the body will be an empty array
-example body (success):
+returns an array of public bin IDs for the requester's IP Address. public bin IDs are strings. Possible responses are outlined below
+200: Found bins
 ```
 ["ce41a3dc-751b-4149-a427-0acfc531ddf5","783e5a54-0a19-4158-bc43-e872a177b366"]
 ```
-example body (failure)
+404: no bins found for IP (no body)
 ```
-[]
 ```
 
 ## `POST "/bin"`
@@ -34,7 +33,7 @@ Returns an array of requests made to a bin. Requests follow the mongo document s
 error: "error: generic server error message"
 ```
 
-404: not found (no body)
+404: no requests found for bin (no body)
 ```
 ```
 

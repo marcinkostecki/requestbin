@@ -48,7 +48,7 @@ async function getBinsFromIp(ip) {
   try {
     result = await postgresService.getBinArrayFromIp(ip)
   } catch (err) {
-    console.log("err", err)
+    console.log("get bins from IP failed\n", err)
   }
   
   return result

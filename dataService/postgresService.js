@@ -51,7 +51,7 @@ async function getBinArrayFromIp(ip) {
   })
   return binArray
   } catch(err){
-    console.log("Straigt to getBinArrayFromIP postgres: ", err.message)
+    console.log("getting bins from IP failed!", err.message)
     return []
   }
 }
@@ -63,7 +63,6 @@ async function getRequestIdsFromBin(publicBinId) {
   try{
     const privateID = await getPrivateId(publicBinId)
     const sql = `SELECT mongo_id FROM requests WHERE bin_id = '${privateID}' ORDER BY time_created DESC`
-    console.log(sql)
     result = await pgClient.query(sql)
   } catch (err) {
 
