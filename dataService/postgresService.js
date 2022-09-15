@@ -1,8 +1,19 @@
 const pg = require('pg');
+require('dotenv').config()
 
-var connectionString = "postgres://marcin:@localhost/request_bin";
-var pgClient = new pg.Client(connectionString);
-pgClient.connect();
+//init pgClient in the global scope
+var pgClient = null
+
+main().catch(err => console.log("postgres connection failed!\n", err));
+async function main() {
+  const user = process.env.POSTGRES_USER
+  const pw = process.env.POSTGRES_PW
+  const host = process.env.POSTGRES_HOST
+  const db = process.env.POSTGRES_DB
+  const connectionString = `postgres://${user}:${pw}@${host}/${db}`;
+  pgClient = new pg.Client(connectionString);
+  await pgClient.connect();
+}
 
 async function insertRequest(mongoId, publicId) {
   const privateId = await getPrivateId(publicId);
