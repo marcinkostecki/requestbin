@@ -35,5 +35,10 @@ async function insert(request) {
 
 }
 
+async function createBin(binId, ip) {
+  // call postgres service to do this for me
+  const result = await postgresService.createBin(binId, ip);
+  return result;
+}
 
-module.exports = { insert };
+module.exports = { insert, createBin };

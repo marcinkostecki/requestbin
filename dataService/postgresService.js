@@ -17,4 +17,10 @@ async function getBinId(path) {
   return result.rows.length === 0 ? null : result.rows[0].id;
 }
 
-module.exports = { insertRequest };
+async function createBin(binId, ip) {
+  const sql = `INSERT INTO bins(publicId, ip_address) VALUES ('${binId}', '${ip}')`;
+  const result = await pgClient.query(sql);
+  return result;
+}
+
+module.exports = { insertRequest, createBin };
