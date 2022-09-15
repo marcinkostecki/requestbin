@@ -23,11 +23,12 @@ async function insert(request) {
 
   try {
     const result = await postgresService.insertRequest(mongoId, path);
-    throw error;
+    // throw error;
   } catch (error) {
-    const mongoResult = await mongo.deleteOne(mongoId);
-    console.log(mongoResult);
-    // console.log(`Deleted request in mongo with id: ${mongoId}`);
+    // console.error(error);
+    // const mongoResult = await mongo.deleteOne(mongoId);
+    // // console.log(mongoResult);
+    // // console.log(`Deleted request in mongo with id: ${mongoId}`);
     // const readOneResult = await mongo.readOne(mongoId);
     // console.log(readOneResult);
   }
