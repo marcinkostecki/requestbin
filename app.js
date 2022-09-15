@@ -7,6 +7,7 @@ port = 3000;
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded());
+app.use(express.static('public'));
 
 //Got to hompage showing bins and New bin button
 app.get("/", (request, response) => {
@@ -14,6 +15,7 @@ app.get("/", (request, response) => {
   // explanation of what this does
   // option to create a bin
   // show bins
+  response.status(200).sendFile('index.html');
 });
 
 //Show all the bins
@@ -21,11 +23,7 @@ app.get("/bins", async (request, response) => {
   // const ip = request.headers['x-forwarded-for'];
   const ip = request.ip;
   const bins = await dataService.getBinsFromIp(ip);
-  if (bins.length > 0) {
-    response.status(200).json(bins);
-  } else {
-    response.status(404).send();
-  }
+  response.status(200).json(bins);
 });
 
 //Put request in the bin
@@ -41,7 +39,7 @@ app.all("/req/:publicId", async (request, response) => {
   }
 });
 
-// Show request from a bin
+// Show request from a bin and bin info: creation date and status {}
 app.get("/bins/:binId", async (request, response) => {
   const binId = request.params.binId
 
