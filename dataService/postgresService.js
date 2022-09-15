@@ -12,10 +12,9 @@ async function insertRequest(mongoId, path) {
 }
 
 async function getBinId(path) {
-  // todo
-  const result = await 4;
-  return result;
+  const sql = `SELECT id FROM bins WHERE url = ${path}`;
+  const result = await pgClient.query(sql);
+  return result.rows.length === 0 ? null : result.rows[0].id;
 }
-
 
 module.exports = { insertRequest };

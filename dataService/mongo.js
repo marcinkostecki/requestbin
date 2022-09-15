@@ -16,9 +16,16 @@ async function insertOne(req) {
   return id.toString();
 }
 
+async function deleteOne(id) {
+  reqModel.findByIdAndDelete(id, function (err) {
+    if (err) console.log(err);
+    console.log("Successful deletion");
+  });
+}
+
 function readOne(id) {
   return reqModel.findById(id);
 }
 
 
-module.exports = { insertOne, readOne };
+module.exports = { insertOne, readOne, deleteOne };
