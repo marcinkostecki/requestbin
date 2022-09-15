@@ -21,8 +21,6 @@ app.get("/bins", async (request, response) => {
   // const ip = request.headers['x-forwarded-for'];
   const ip = request.ip;
   const bins = await dataService.getBinsFromIp(ip);
-  console.log("show all bins: ip", ip)
-  console.log("show all bins: bins", bins)
   response.status(200).json(bins);
 });
 
@@ -45,10 +43,14 @@ app.get("/bin/:binId", async (request, response) => {
 
   try {
     const reqs = await dataService.getRequestsFromBin(binId)
-    response.status(200).json(reqs);
+    if (reqs.length > 0) {
+      response.status(200).json(reqs);
+    } else {
+      response.status(404).send()
+    }
   } catch (err) {
     console.log("In binID", err.message);
-    response.status(400).json({ error: err.message });
+    response.status(500).json({ error: err.message });
   }
 });
 

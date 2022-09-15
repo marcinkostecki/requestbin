@@ -59,6 +59,9 @@ async function getRequestsFromBin(publicBinId) {
   //get an array of document IDs from postgres
 
   const mongoIdArr = await postgresService.getRequestIdsFromBin(publicBinId)
+  if (mongoIdArr.length === 0) {
+    return []
+  }
 
   //use the array of document IDs to pull requests from mongo
   const requestArr = await mongo.readMany(mongoIdArr)
