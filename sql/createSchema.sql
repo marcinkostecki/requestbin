@@ -12,9 +12,6 @@ CREATE TABLE bins (
 );
 
 CREATE TABLE requests (
-  id serial PRIMARY KEY,
-  bin_id int REFERENCES bins(id) ON DELETE CASCADE NOT NULL,
-  mongo_id text NOT NULL UNIQUE,
-  method text NOT NULL,
-  headers text NOT NULL
+  mongo_id text PRIMARY KEY,
+  bin_id int REFERENCES bins(id) ON DELETE CASCADE NOT NULL
 );
