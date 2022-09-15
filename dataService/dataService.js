@@ -42,4 +42,28 @@ async function binExists(publicId) {
   return postgresService.binExists(publicId);
 }
 
-module.exports = { insert, createBin, binExists };
+//returns an array of public bin IDs given an IP address
+async function getBinsFromIp(ip) {
+  let result
+  try {
+    result = await postgresService.getBinArrayFromIp(ip)
+  } catch (err) {
+    console.log("err", err)
+  }
+  
+  return result
+}
+
+//returns an array of requests given a bin ID
+async function getRequestsFromBin(publicBinId) {
+  //get an array of document IDs from postgres
+
+  const mongoIdArr = await postgresService.getRequestIdsFromBin(publicBinId)
+
+  //use the array of document IDs to pull requests from mongo
+  const requestArr = await mongo.readMany(mongoIdArr)
+  return requestArr
+}
+
+
+module.exports = { insert, createBin, binExists, getBinsFromIp, getRequestsFromBin };

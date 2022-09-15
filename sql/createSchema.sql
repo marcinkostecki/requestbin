@@ -14,5 +14,6 @@ CREATE TABLE bins (
 
 CREATE TABLE requests (
   mongo_id text PRIMARY KEY,
-  bin_id int REFERENCES bins(id) ON DELETE CASCADE NOT NULL
+  bin_id int REFERENCES bins(id) ON DELETE CASCADE NOT NULL,
+  time_created timestamp NOT NULL DEFAULT NOW()
 );
