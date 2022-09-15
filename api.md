@@ -11,8 +11,17 @@ returns an array of public bin IDs for the requester's IP Address. public bin ID
 ```
 ```
 
-## `POST "/bin"`
-Creates a new bin for the requester's IP Address. Currently returns nothing
+## `POST "/bins"`
+Creates a bin connected to the IP address and returns the newly created binID(publicID)
+
+201: Bin created
+```
+{"binId":"1a81c85b-f486-41d5-bdc1-09974b5e11fb"}
+```
+
+400: bin creation failed (no body)
+```
+```
 
 ## `ALL /req/:publicId`
 Puts a request within a bin. response is 200 if successful, 400 if failure 
@@ -25,7 +34,7 @@ example body (failure)
 {error: "bin does not exist"}
 ```
 
-## `GET /bin/:binId`
+## `GET /bins/:binId`
 Returns an array of requests made to a bin. Requests follow the mongo document schema outlined below. Possible response statuses are outlined below i
 
 500: internal server error
