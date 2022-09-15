@@ -39,19 +39,18 @@ app.all("/req/:publicId", async (request, response) => {
   }
 });
 
-// Show request from a bin and bin info: creation date and status {}
+// Show request from a bin and bin info: creation date and status {bins{creationDate: 646464, status: true}}
 app.get("/bins/:binId", async (request, response) => {
   const binId = request.params.binId
 
+  
   try {
-    const reqs = await dataService.getRequestsFromBin(binId)
-    if (reqs.length > 0) {
-      response.status(200).json(reqs);
-    } else {
-      response.status(404).send()
-    }
+    // const reqs = await dataService.getRequestsFromBin(binId)
+    const binAndRequetsObj = await dataService.getBinInfoAndRequests(binId);
+    response.status(200).json(binAndRequetsObj)
+
   } catch (err) {
-    console.log("In binID", err.message);
+    // console.log("In binID", err.message);
     response.status(500).json({ error: err.message });
   }
 });

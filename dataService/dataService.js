@@ -68,5 +68,12 @@ async function getRequestsFromBin(publicBinId) {
   return requestArr
 }
 
+//returns the sitched together object {bin: info, request: [requests]}
+async function getBinInfoAndRequests(binID){
+  const requests = await getRequestsFromBin(binID);
+  const binInfo = await postgresService.getBinInfo(binID);
+  return { binInfo, requests }
+}
 
-module.exports = { insert, createBin, binExists, getBinsFromIp, getRequestsFromBin };
+
+module.exports = { insert, createBin, binExists, getBinsFromIp, getRequestsFromBin, getBinInfoAndRequests };

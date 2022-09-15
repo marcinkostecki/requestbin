@@ -77,4 +77,21 @@ async function getRequestIdsFromBin(publicBinId) {
   })
 }
 
-module.exports = { insertRequest, createBin, binExists, getBinArrayFromIp, getRequestIdsFromBin };
+//Given a BinId return an object that has binId, time_created, active;
+async function getBinInfo(publicBinId) {
+  try{
+    const sql = `SELECT * FROM bins WHERE publicId = '${publicBinId}'`;
+    result = await pgClient.query(sql)
+    let binObj = result.rows[0]
+    let newObj = {}
+    newObj.binId = publicBinId;
+    newObj.active = binObj.active;
+    newObj.time_created = binObj.time_created;
+
+    return newObj;
+  } catch (err) {
+    return err;
+  }
+}
+
+module.exports = { insertRequest, createBin, binExists, getBinArrayFromIp, getRequestIdsFromBin, getBinInfo };
