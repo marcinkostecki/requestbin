@@ -29,6 +29,7 @@ function readOne(id) {
 async function readMany(idArr) {
   var requestArr = []
   for (var i = 0; i < idArr.length; i++) {
+    const id = idArr[i];
     var request = await readOne(id)
     requestArr.push(request)
   }

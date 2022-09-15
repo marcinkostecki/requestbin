@@ -41,20 +41,37 @@ async function binExists(publicId) {
 
 //returns an array of format [ {publicId: '22rewfewq'}, {publicId: '234fewf'}, ...]
 async function getBinArrayFromIp(ip) {
-  const sql = `SELECT publicId FROM bins WHERE ip_address = ${ip}`
+  try {
+  const sql = `SELECT publicId FROM bins WHERE ip_address = '${ip}'`
   const result = await pgClient.query(sql)
-  const binArray = result.rows
+  console.log("result", result)
+  let binArray = result.rows
   //flatten bin array: [ {publicId: '123'}, {publicId: '321'}] => ['123', '321']
-  return binArray.map((binObj) => {
-    return binObj.publicId
+  binArray = binArray.map((binObj) => {
+    return binObj.publicid;
   })
+  console.log("binArray:", binArray)
+  return binArray
+  } catch(err){
+    console.log("Straigt to getBinArrayFromIP postgres: ", err.message)
+    return []
+  }
 }
 
 //given bin ID, return an array of mongo document ids for requests
 //requests are sorted such that the most recent requests are first
 async function getRequestIdsFromBin(publicBinId) {
-  const sql = `SELECT mongo_id FROM requests WHERE bin_id = ${publicBinId} ORDER BY time_created DESC`
-  const result = await pgClient.query(sql)
+  let result;
+  try{
+    const privateID = await getPrivateId(publicBinId)
+    const sql = `SELECT mongo_id FROM requests WHERE bin_id = '${privateID}' ORDER BY time_created DESC`
+    console.log(sql)
+    result = await pgClient.query(sql)
+  } catch (err) {
+
+    return [];
+  }
+
   const requestArr = result.rows
 
   //flatten request array
