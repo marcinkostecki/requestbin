@@ -17,7 +17,7 @@ app.get("/", (request, response) => {
 
 app.get("/bins", (request, response) => {
   const ip = request.headers['x-forwarded-for'];
-  //const bins = dataServices.getBins(ip);
+  const bins = dataService.getBinsFromIp(ip);
   response.status(200).json(bins);
 });
 
@@ -38,8 +38,8 @@ app.get("/bin/:binId", async (request, response) => {
   const binId = request.params
   console.log(request)
   try {
-    // const reqs = dataServices.getReqs
-    response.status(200).send()/*.json(reqs)*/;
+    const reqs = dataService.getRequestsFromBin(binId)
+    response.status(200).send().json(reqs);
   } catch (err) {
     console.log(err);
     response.status(400).json({ error: err.message });

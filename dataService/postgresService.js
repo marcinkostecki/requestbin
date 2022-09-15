@@ -28,4 +28,28 @@ async function binExists(publicId) {
   return !!privateId;
 }
 
-module.exports = { insertRequest, createBin, binExists };
+//returns an array of format [ {publicId: '22rewfewq'}, {publicId: '234fewf'}, ...]
+async function getBinArrayFromIp(ip) {
+  const sql = `SELECT publicId FROM bins WHERE ip_address = ${ip}`
+  const result = await pgClient.query(sql)
+  const binArray = result.rows
+  //flatten bin array: [ {publicId: '123'}, {publicId: '321'}] => ['123', '321']
+  return binArray.map((binObj) => {
+    return binObj.publicId
+  })
+}
+
+//given bin ID, return an array of mongo document ids for requests
+//requests are sorted such that the most recent requests are first
+async function getRequestIdsFromBin(publicBinId) {
+  const sql = `SELECT mongo_id FROM requests WHERE bin_id = ${publicBinId} ORDER BY time_created DESC`
+  const result = await pgClient.query(sql)
+  const requestArr = result.rows
+
+  //flatten request array
+  return requestArr.map((reqObj) => {
+    return reqObj.mongo_id
+  })
+}
+
+module.exports = { insertRequest, createBin, binExists, getBinArrayFromIp, getRequestIdsFromBin };
