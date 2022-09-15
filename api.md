@@ -57,7 +57,7 @@ example Mongo Document:
 successful response body is an array of mongo documents. some mongo document fields are omitted
 ```
 {
-  bin: {
+  binInfo: {
     binId: "ce41a3dc-751b-4149-a427-0acfc531ddf5",
     time_created: 2022-09-15 16:52:18.242262,
     active: true
