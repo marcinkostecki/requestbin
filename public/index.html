@@ -23,14 +23,14 @@
   </main>
 
   <script type="text/x-handlebars" id="binListTemplate">
-    <div class="block">
+    <div class="block" id="binList">
       <h2>Your Bins</h2>
-      <a class="button" href="#"><strong>+</strong> New Bin</a>
+      <a class="button" id="newBinBttn" href="#"><strong>+</strong> New Bin</a>
       <p>This list is based on bins created at your IP address.</p>
       <ul class="binList">
-        {{#each bins}}
+        {{#each this}}
           <li class="binListItem">
-            <a href="{{binUrl}}">{{binId}}</a>
+            <a class="binLink" href="#" data-id="{{this}}">{{this}}</a>
           </li>
         {{/ each}}
       </ul>
@@ -60,7 +60,8 @@
     </table>
   </script>
 
-  <script type="text/x-handlebars" id="requestTemplate">
+  <script type="text/x-handlebars" id="reqListTemplate">
+    {{#each requests}}
     <div class="block">
       <h3 class="method">{{method}}</h3>
       <p class="path">{{path}}</p>
@@ -84,6 +85,7 @@
         </tbody>
       </table>
     </div>
+    {{/each}}
   </script>
 
   <script src="javascripts/index.js"></script>

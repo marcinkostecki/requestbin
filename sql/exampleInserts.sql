@@ -1,6 +1,6 @@
 \c request_bin
 
-INSERT INTO bins(url, ip_address) VALUES 
+INSERT INTO bins(publicId, ip_address) VALUES 
 ('www.com', '0.0.0.127'),
 ('www.epofallon.com', '1.2.43.556.0'),
 ('www.nino.com', '1.2.3.5555.33');
