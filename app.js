@@ -38,7 +38,7 @@ app.all("/req/:publicId", async (request, response) => {
 });
 
 // Show request from a bin
-app.get("/bin/:binId", async (request, response) => {
+app.get("/bins/:binId", async (request, response) => {
   const binId = request.params.binId
 
   try {
@@ -55,15 +55,22 @@ app.get("/bin/:binId", async (request, response) => {
 });
 
 //Creating a bin
-app.post("/bin", async (request, response) => {
-  const binId = uuidv4();
-  // const ip = request.headers['x-forwarded-for'];
-  const ip = request.ip
-  const result = await dataService.createBin(binId, ip);
+app.post("/bins", async (request, response) => {
+  
+  try {
+    const binId = uuidv4();
+    // const ip = request.headers['x-forwarded-for'];
+    const ip = request.ip
+    await dataService.createBin(binId, ip);
+    response.status(201).json({binId: binId})
+  } catch (err) {
+    response.status(400).send()
+  }
+
 
 
   //needs fixing
-  response.redirect(`/bin/${binId}`);
+  // response.redirect(`/bin/${binId}`);
 });
 
 app.listen(port, () => console.log('Running express app'));
