@@ -7,6 +7,7 @@ port = 3000;
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded());
+app.use(express.static('public'));
 
 //Got to hompage showing bins and New bin button
 app.get("/", (request, response) => {
@@ -14,6 +15,7 @@ app.get("/", (request, response) => {
   // explanation of what this does
   // option to create a bin
   // show bins
+  response.status(200).sendFile('index.html');
 });
 
 //Show all the bins
@@ -38,7 +40,7 @@ app.all("/req/:publicId", async (request, response) => {
 });
 
 // Show request from a bin
-app.get("/bin/:binId", async (request, response) => {
+app.get("/bins/:binId", async (request, response) => {
   const binId = request.params.binId
 
   try {
@@ -55,7 +57,7 @@ app.get("/bin/:binId", async (request, response) => {
 });
 
 //Creating a bin
-app.post("/bin", async (request, response) => {
+app.post("/bins", async (request, response) => {
   const binId = uuidv4();
   // const ip = request.headers['x-forwarded-for'];
   const ip = request.ip
