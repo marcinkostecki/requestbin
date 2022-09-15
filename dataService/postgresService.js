@@ -44,13 +44,11 @@ async function getBinArrayFromIp(ip) {
   try {
   const sql = `SELECT publicId FROM bins WHERE ip_address = '${ip}'`
   const result = await pgClient.query(sql)
-  console.log("result", result)
   let binArray = result.rows
   //flatten bin array: [ {publicId: '123'}, {publicId: '321'}] => ['123', '321']
   binArray = binArray.map((binObj) => {
     return binObj.publicid;
   })
-  console.log("binArray:", binArray)
   return binArray
   } catch(err){
     console.log("Straigt to getBinArrayFromIP postgres: ", err.message)
