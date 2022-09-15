@@ -24,5 +24,17 @@ function readOne(id) {
   return reqModel.findById(id);
 }
 
+//todo: is there a better way to do this? Couldn't find an easy mongoose function
+//for querying multiple documents by ID
+async function readMany(idArr) {
+  var requestArr = []
+  for (var i = 0; i < idArr.length; i++) {
+    const id = idArr[i];
+    var request = await readOne(id)
+    requestArr.push(request)
+  }
+  return requestArr
+}
 
-module.exports = { insertOne, readOne, deleteOne };
+
+module.exports = { insertOne, readOne, deleteOne, readMany };
