@@ -1,7 +1,7 @@
-#**OUTHOUSE API DOCUMENTATION**
+# **OUTHOUSE API DOCUMENTATION**
 
 
-##`GET "/bins"`
+## `GET "/bins"`
 returns an array of public bin IDs for the requester's IP Address. public bin IDs are strings. response is always 200. if no bins are found for the requester's IP, the body will be an empty array
 example body (success):
 ```
@@ -12,10 +12,10 @@ example body (failure)
 []
 ```
 
-##`POST "/bin"`
+## `POST "/bin"`
 Creates a new bin for the requester's IP Address. Currently returns nothing
 
-##`ALL /req/:publicId`
+## `ALL /req/:publicId`
 Puts a request within a bin. response is 200 if successful, 400 if failure 
 example body (success):
 ```
@@ -26,7 +26,7 @@ example body (failure)
 {error: "bin does not exist"}
 ```
 
-##`GET /bin/:binId`
+## `GET /bin/:binId`
 Returns an array of requests made to a bin. Requests follow the mongo document schema outlined below. Possible response statuses are outlined below i
 
 500: internal server error
