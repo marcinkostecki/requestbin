@@ -13,6 +13,9 @@ async function insert(request) {
     body: JSON.stringify(request.body),
   };
 
+<<<<<<< HEAD
+}
+=======
   let mongoId;
   try {
     mongoId = await mongo.insertOne(req);
@@ -20,6 +23,7 @@ async function insert(request) {
   } catch (error) {
     // ABORT
   }
+>>>>>>> 3520b46264b285b3ee87fe0136293f76708de302
 
   try {
     const result = await postgresService.insertRequest(mongoId, path);
