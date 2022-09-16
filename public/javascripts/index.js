@@ -147,6 +147,13 @@ class View {
     }
   }
 
+  bindRefresh(handler) {
+    this.getElement('.refresh').onclick = event => {
+      event.preventDefault();
+      handler();
+    }
+  }
+
   insertRequests(binInfo, reqs) {
     this.wipeClean();
     this.insertBinInfo(binInfo);
@@ -211,6 +218,12 @@ class Controller {
     }
   }
 
+  handleRefresh = async () => {
+    await this.model.getReqs(this.model.currentBin.binId);
+    this.view.wipeClean();
+    this.buildBin();
+  }
+
   buildBinList() {
     this.view.insertBins(this.model.bins);
   }
@@ -218,6 +231,7 @@ class Controller {
   async buildBin() {
     this.view.insertRequests(this.model.binInfo, this.model.currentRequests);
     this.view.bindCopy(this.handleCopy);
+    this.view.bindRefresh(this.handleRefresh);
     this.model.websocket = await this.setUpWebsocket();
   }
 
