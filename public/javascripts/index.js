@@ -48,7 +48,7 @@ class Model {
     this.binInfo = response.binInfo;
     this.currentRequests = response.requests;
     this.formatBinInfo();
-    this.formatHeaders();
+    this.formatRequests();
   }
 
   async postBin() {
@@ -61,7 +61,12 @@ class Model {
     this.binInfo.status = this.binInfo.active ? 'Active' : 'Inactive';
   }
 
-  formatHeaders() {
+  formatRequests() {
+    this.formatheaders();
+    this.formatBody();
+  }
+
+  formatheaders() {
     this.currentRequests.forEach(req => {
       const keys = Object.keys(req.headers);
       req.headers = keys.map(key => {
@@ -69,12 +74,17 @@ class Model {
       });
     });
   }
+
+  formatBody() {
+    this.currentRequests.forEach(req => {
+      req.body = JSON.stringify(JSON.parse(req.body), null, 2);
+    });
+  }
 }
 
 class View {
   constructor() {
     this.compileTemplates();
-    this.retrieveElements();
   }
 
   getElement(selector) {
@@ -83,10 +93,6 @@ class View {
 
   getAllElements(selector) {
     return [...document.querySelectorAll(selector)];
-  }
-
-  retrieveElements() {
-
   }
 
   compileTemplates() {
@@ -133,6 +139,13 @@ class View {
     }
   }
 
+  bindCopy(handler) {
+    this.getElement('.copy').onclick = event => {
+      event.preventDefault();
+      handler(this.getUrl(event.target));
+    }
+  }
+
   insertRequests(binInfo, reqs) {
     this.removeBinList();
     this.insertBinInfo(binInfo);
@@ -147,6 +160,10 @@ class View {
 
   wipeClean() {
     this.getElement('main').innerHTML = "";
+  }
+
+  getUrl(target) {
+    return target.closest('#endpoint').querySelector('span').textContent;
   }
 }
 
@@ -183,16 +200,25 @@ class Controller {
     this.firstRender();
   }
 
+  handleCopy = async url => {
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      console.log('copy failed');
+    }
+  }
+
   buildBinList() {
     this.view.insertBins(this.model.bins);
   }
 
   buildBin() {
     this.view.insertRequests(this.model.binInfo, this.model.currentRequests);
+    this.view.bindCopy(this.handleCopy);
   }
 }
-let app;
 
+let app;
 addEventListener('DOMContentLoaded', () => {
   app = new Controller(new Model(), new View());
 });

@@ -23,8 +23,9 @@ summary::-webkit-details-marker { display: none; }
 
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #FCF8E8;
+  background-color: #eeebe7;
   font-size: 18px;
+  overflow-wrap: break-word;
 }
 
 header {
@@ -38,9 +39,9 @@ header a {
 
 .block {
   margin: 10px;
-  margin-left: 12.5%;
+  margin-left: 7.5%;
   padding: 15px;
-  width: 75%;
+  width: 85%;
   background-color: lightblue;
   vertical-align: middle;
 }
@@ -82,6 +83,19 @@ table {
 
 td {
   padding-right: 20px;
+}
+
+pre {
+  overflow: auto;
+}
+
+.copy {
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+.copy:active {
+  background-color: #607EAA;
 }
 
 .copy img {

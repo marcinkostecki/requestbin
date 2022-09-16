@@ -11,10 +11,6 @@ app.use(express.static('public'));
 
 //Got to hompage showing bins and New bin button
 app.get("/", (request, response) => {
-  // send home page
-  // explanation of what this does
-  // option to create a bin
-  // show bins
   response.status(200).sendFile('index.html');
 });
 
@@ -70,11 +66,6 @@ app.post("/bins", async (request, response) => {
   } catch (err) {
     response.status(400).send()
   }
-
-
-
-  //needs fixing
-  // response.redirect(`/bin/${binId}`);
 });
 
 app.listen(port, () => console.log('Running express app'));
