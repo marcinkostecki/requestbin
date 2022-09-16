@@ -94,8 +94,40 @@ pre {
   border-radius: 3px;
 }
 
-.copy:active {
+.copy:active, .refresh:active {
   background-color: #607EAA;
+}
+
+.refresh img:hover {
+  animation-name: spin;
+  animation-duration: 400ms;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+}
+  
+@keyframes spin {
+  from {
+  transform:rotate(0deg);
+  }
+  to {
+  transform:rotate(360deg);
+  }
+}
+
+/* body > header .actions a.add:hover:before */
+ /* .refresh:hover:before {
+  transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+} */
+
+.refresh img {
+  height: 18px;
+  width: 18px;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-bottom: 2px;
 }
 
 .copy img {
@@ -125,7 +157,7 @@ header p {
 main h2 {
   display: inline-block;
   vertical-align: middle;
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 
 main p {
