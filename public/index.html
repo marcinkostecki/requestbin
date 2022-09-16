@@ -46,7 +46,9 @@
         <p>
           Your endpoint: <span>{{binUrl}}</span>
         </p>
-        <a href="#" class="copy"><img src="images/copy.png" alt=""></a>
+        <a href="#" class="copy">
+          <img src="images/copy.png" alt="">
+        </a>
       </div>
       <table>
         <tr>
@@ -75,13 +77,13 @@
           <tr>
             <td>
               <h4>Body</h4>
-              <p>{{body}}</p>
+              <pre>{{body}}</pre>
             </td>
             <td>
               <h4>Headers</h4>
               <ul>
                 {{#each headers}}
-                  <li><strong>{{this.name}}</strong> {{this.value}}</li>
+                  <li><strong>{{this.name}}:</strong> {{this.value}}</li>
                 {{/each}}
               </ul>
             </td>
