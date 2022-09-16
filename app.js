@@ -1,8 +1,12 @@
 const express = require("express");
-const dataService = require("./dataService/dataService");
 const { v4: uuidv4 } = require('uuid');
+const ws = require('ws');
+const dataService = require("./dataService/dataService");
+
+const port = 3000;
+const WEBSOCKET_SERVER_URL = 'ws://localhost:7071';
+
 const app = express();
-port = 3000;
 
 app.use(express.json());
 app.use(express.text());
@@ -16,8 +20,8 @@ app.get("/", (request, response) => {
 
 //Show all the bins
 app.get("/bins", async (request, response) => {
-  const ip = request.headers['x-forwarded-for']; // use this on nginx
-  // const ip = request.ip; // use this locally
+  // const ip = request.headers['x-forwarded-for']; // use this on nginx
+  const ip = request.ip; // use this locally
   const bins = await dataService.getBinsFromIp(ip);
   if (bins.length > 0) {
     response.status(200).json(bins);
@@ -34,7 +38,15 @@ app.all("/req/:publicId", async (request, response) => {
   if (!binExists) {
     response.status(400).json({ error: "bin does not exist" });
   } else {
-    await dataService.insert(request);
+    const req = await dataService.insert(request);
+
+    const websocket = new ws(WEBSOCKET_SERVER_URL);
+    websocket.on('open', () => {
+      const message = { type: 'new_content_for', publicId: request.params.publicId };
+      websocket.send(JSON.stringify(message));
+      websocket.close();
+    });
+
     response.send('thanks');
   }
 });
@@ -43,7 +55,7 @@ app.all("/req/:publicId", async (request, response) => {
 app.get("/bins/:binId", async (request, response) => {
   const binId = request.params.binId
 
-  
+
   try {
     // const reqs = await dataService.getRequestsFromBin(binId)
     const binAndRequetsObj = await dataService.getBinInfoAndRequests(binId);
@@ -56,13 +68,13 @@ app.get("/bins/:binId", async (request, response) => {
 
 //Creating a bin
 app.post("/bins", async (request, response) => {
-  
+
   try {
     const binId = uuidv4();
-    const ip = request.headers['x-forwarded-for']; // use this for nginx
-    // const ip = request.ip // use this locally
+    // const ip = request.headers['x-forwarded-for']; // use this for nginx
+    const ip = request.ip // use this locally
     await dataService.createBin(binId, ip);
-    response.status(201).json({binId: binId})
+    response.status(201).json({ binId: binId })
   } catch (err) {
     response.status(400).send()
   }
