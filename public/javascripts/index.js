@@ -148,7 +148,7 @@ class View {
   }
 
   insertRequests(binInfo, reqs) {
-    this.removeBinList();
+    this.wipeClean();
     this.insertBinInfo(binInfo);
     const reqsHtml = this.templates['reqListTemplate'](reqs);
     this.getElement('main').insertAdjacentHTML('beforeend', reqsHtml);
@@ -218,17 +218,21 @@ class Controller {
   async buildBin() {
     this.view.insertRequests(this.model.binInfo, this.model.currentRequests);
     this.view.bindCopy(this.handleCopy);
-    this.model.websocket = await this.openWebsocket();
+    this.model.websocket = await this.setUpWebsocket();
   }
 
-  openWebsocket() {
+  setUpWebsocket() {
     const websocket = new WebSocket(this.model.WEBSOCKET_SERVER_URL);
     return new Promise((resolve, reject) => {
       const interval = setInterval(() => {
         if (websocket.readyState === 1) {
           clearInterval(interval);
-          const message = { type: 'new_subscriber_for', publicId: this.model.currentBin.binId }
-          websocket.send(JSON.stringify(message));
+          websocket.send(JSON.stringify({ type: 'new_subscriber', publicId: this.model.currentBin.binId }));
+          websocket.onmessage = async () => {
+            await this.model.getReqs(this.model.currentBin.binId);
+            this.view.insertRequests(this.model.binInfo, this.model.currentRequests);
+            this.view.bindCopy(this.handleCopy);
+          };
           resolve(websocket);
         }
       }, 10);

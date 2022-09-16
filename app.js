@@ -42,7 +42,7 @@ app.all("/req/:publicId", async (request, response) => {
 
     const websocket = new ws(WEBSOCKET_SERVER_URL);
     websocket.on('open', () => {
-      const message = { type: 'new_content_for', publicId: request.params.publicId };
+      const message = { type: 'new_request', publicId: request.params.publicId };
       websocket.send(JSON.stringify(message));
       websocket.close();
     });
