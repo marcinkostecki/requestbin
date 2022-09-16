@@ -1,9 +1,10 @@
 class Model {
   constructor() {
-    // this.url = 'http://localhost:3000/bins';
-    // this.endpoint = 'http://localhost:3000/req';
-    this.url = 'https://app.marcinkostecki.info/bins';
-    this.endpoint = 'https://app.marcinkostecki.info/req';
+    this.url = 'http://localhost:3000/bins';
+    this.endpoint = 'http://localhost:3000/req';
+    this.WEBSOCKET_SERVER_URL = 'ws://localhost:7071';
+    // this.url = 'https://app.marcinkostecki.info/bins';
+    // this.endpoint = 'https://app.marcinkostecki.info/req';
   }
 
   // eslint-disable-next-line consistent-return
@@ -39,7 +40,7 @@ class Model {
   }
 
   async getReqs(binId) {
-     const response = await this.request(`${this.url}/${binId}`, {
+    const response = await this.request(`${this.url}/${binId}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -154,12 +155,12 @@ class View {
   }
 
   insertRequests(binInfo, reqs) {
-    this.removeBinList();
+    this.wipeClean();
     this.insertBinInfo(binInfo);
     const reqsHtml = this.templates['reqListTemplate'](reqs);
     this.getElement('main').insertAdjacentHTML('beforeend', reqsHtml);
   }
-  
+
   insertBinInfo(binInfo) {
     const binInfoHtml = this.templates['binInfoTemplate'](binInfo);
     this.getElement('main').insertAdjacentHTML('afterbegin', binInfoHtml);
@@ -202,7 +203,9 @@ class Controller {
     this.buildBin();
   }
 
-  handleBinsButton = async => {
+  handleBinsButton = async () => {
+    await this.model.websocket.close();
+    this.model.websocket = undefined;
     this.view.wipeClean();
     this.firstRender();
   }
@@ -225,10 +228,29 @@ class Controller {
     this.view.insertBins(this.model.bins);
   }
 
-  buildBin() {
+  async buildBin() {
     this.view.insertRequests(this.model.binInfo, this.model.currentRequests);
     this.view.bindCopy(this.handleCopy);
     this.view.bindRefresh(this.handleRefresh);
+    this.model.websocket = await this.setUpWebsocket();
+  }
+
+  setUpWebsocket() {
+    const websocket = new WebSocket(this.model.WEBSOCKET_SERVER_URL);
+    return new Promise((resolve, reject) => {
+      const interval = setInterval(() => {
+        if (websocket.readyState === 1) {
+          clearInterval(interval);
+          websocket.send(JSON.stringify({ type: 'new_subscriber', publicId: this.model.currentBin.binId }));
+          websocket.onmessage = async () => {
+            await this.model.getReqs(this.model.currentBin.binId);
+            this.view.insertRequests(this.model.binInfo, this.model.currentRequests);
+            this.view.bindCopy(this.handleCopy);
+          };
+          resolve(websocket);
+        }
+      }, 10);
+    });
   }
 }
 

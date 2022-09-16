@@ -4,8 +4,8 @@ const postgresService = require('./postgresService');
 // eslint-disable-next-line max-lines-per-function
 async function insert(request) {
   const req = {
-    ip: request.headers['x-forwarded-for'], // use this for nginx
-    // ip: request.ip, // use this locally
+    // ip: request.headers['x-forwarded-for'], // use this for nginx
+    ip: request.ip, // use this locally
     path: request.url,
     method: request.method,
     headers: request.headers,
@@ -21,8 +21,8 @@ async function insert(request) {
   }
 
   try {
-    const result = await postgresService.insertRequest(mongoId, request.params.publicId);
-    // throw error;
+    await postgresService.insertRequest(mongoId, request.params.publicId);
+    return req;
   } catch (error) {
     console.error(error.message);
     const mongoResult = await mongo.deleteOne(mongoId);
@@ -51,7 +51,7 @@ async function getBinsFromIp(ip) {
   } catch (err) {
     console.log("get bins from IP failed\n", err)
   }
-  
+
   return result
 }
 
@@ -70,7 +70,7 @@ async function getRequestsFromBin(publicBinId) {
 }
 
 //returns the sitched together object {bin: info, request: [requests]}
-async function getBinInfoAndRequests(binID){
+async function getBinInfoAndRequests(binID) {
   const requests = await getRequestsFromBin(binID);
   const binInfo = await postgresService.getBinInfo(binID);
   return { binInfo, requests }
