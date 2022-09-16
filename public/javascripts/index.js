@@ -1,7 +1,9 @@
 class Model {
   constructor() {
-    this.url = 'http://localhost:3000/bins';
-    this.endpoint = 'http://localhost:3000/req';
+    // this.url = 'http://localhost:3000/bins';
+    // this.endpoint = 'http://localhost:3000/req';
+    this.url = 'https://app.marcinkostecki.info/bins';
+    this.endpoint = 'https://app.marcinkostecki.info/req';
   }
 
   // eslint-disable-next-line consistent-return
@@ -172,7 +174,6 @@ class Controller {
 
   handleNewBin = async target => {
     await this.model.postBin();
-    debugger;
     await this.model.getReqs(this.model.currentBin.binId);
     this.buildBin();
   }

@@ -4,7 +4,8 @@ const postgresService = require('./postgresService');
 // eslint-disable-next-line max-lines-per-function
 async function insert(request) {
   const req = {
-    ip: request.ip,
+    ip: request.headers['x-forwarded-for'], // use this for nginx
+    // ip: request.ip, // use this locally
     path: request.url,
     method: request.method,
     headers: request.headers,
