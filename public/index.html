@@ -13,6 +13,7 @@
 <body>
   <header>
     <h1>RequestBin</h1>
+    <a href="#" class="button">Your Bins</a>
     <p>
       A url is provided to you that will collect requests made to it. You can inspect those requests in a human-friendly way. RequestBin helps you see what your client is sending or to inspect and debug webhook requests.
     </p>
@@ -39,29 +40,32 @@
   </script>
 
   <script type="text/x-handlebars" id="binInfoTemplate">
-    <h2>Your Bin</h2>
-    <div id="endpoint">
-      <p>
-        Your endpoint: <span>{{binUrl}}</span>
-      </p>
-      <a href="#" class="copy"><img src="images/copy.png" alt=""></a>
+    <div class="block">
+      <h2>Your Bin</h2>
+      <div id="endpoint">
+        <p>
+          Your endpoint: <span>{{binUrl}}</span>
+        </p>
+        <a href="#" class="copy"><img src="images/copy.png" alt=""></a>
+      </div>
+      <table>
+        <tr>
+          <td>Created:</td><td>{{time_created}}</td>
+        </tr>
+        <tr>
+          <td>Count:</td><td>{{count}}</td>
+          
+        </tr>
+        <tr>
+          <td>Status:</td><td>{{status}}</td>
+        </tr>
+      </table>
     </div>
-    <table>
-      <tr>
-        <td>Created:</td><td>{{creationDate}}</td>
-      </tr>
-      <tr>
-        <td>Count:</td><td>{count}</td>
-        
-      </tr>
-      <tr>
-        <td>Status:</td><td>{{status}}</td>
-      </tr>
-    </table>
+    
   </script>
 
   <script type="text/x-handlebars" id="reqListTemplate">
-    {{#each requests}}
+    {{#each this}}
     <div class="block">
       <h3 class="method">{{method}}</h3>
       <p class="path">{{path}}</p>

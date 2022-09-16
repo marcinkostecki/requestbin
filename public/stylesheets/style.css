@@ -29,7 +29,11 @@ body {
 
 header {
   padding: 15px;
-  background-color: #ECB390;
+  background-color: lightblue;
+}
+
+header a {
+  float: right;
 }
 
 .block {
@@ -37,12 +41,13 @@ header {
   margin-left: 12.5%;
   padding: 15px;
   width: 75%;
-  background-color: #ECB390;
+  background-color: lightblue;
   vertical-align: middle;
 }
 
 h1 {
   font-size: 36px;
+  display: inline-block;
 }
 
 h2 {
@@ -93,7 +98,7 @@ td {
 }
 
 .button:hover {
-  background-color: #DF7861;
+  background-color: #607EAA;
   color: #FCF8E8;
   border-color: #FCF8E8;
 }
