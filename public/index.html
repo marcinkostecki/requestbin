@@ -1,102 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RequestBin</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RequestBin</title>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js" integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"
+      integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
 
-  <link rel="stylesheet" href="stylesheets/style.css">
-</head>
-<body>
-  <header>
-    <h1>RequestBin</h1>
-    <a href="#" class="button">Your Bins</a>
-    <p>
-      A url is provided to you that will collect requests made to it. You can inspect those requests in a human-friendly way. RequestBin helps you see what your client is sending or to inspect and debug webhook requests.
-    </p>
-  </header>
-  <main>
- 
+    <link rel="stylesheet" href="stylesheets/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>RequestBin</h1>
+      <a href="#" class="button">Your Bins</a>
+      <p>
+        A url is provided to you that will collect requests made to it. You can
+        inspect those requests in a human-friendly way. RequestBin helps you see
+        what your client is sending or to inspect and debug webhook requests.
+      </p>
+    </header>
+    <main></main>
 
-  </main>
-
-  <script type="text/x-handlebars" id="binListTemplate">
-    <div class="block" id="binList">
-      <h2>Your Bins</h2>
-      <a class="button" id="newBinBttn" href="#"><strong>+</strong> New Bin</a>
-      <p>This list is based on bins created at your IP address.</p>
-      <ul class="binList">
-        {{#each this}}
-          <li class="binListItem">
-            <a class="binLink" href="#" data-id="{{this}}">{{this}}</a>
-          </li>
-        {{/ each}}
-      </ul>
-    </div>
-    
-  </script>
-
-  <script type="text/x-handlebars" id="binInfoTemplate">
-    <div class="block">
-      <h2>Your Bin</h2>
-      <a href="#" class="refresh">
-        <img src="images/refresh.png" alt="">
-      </a>
-      <div id="endpoint">
-        <p>
-          Your endpoint: <span>{{binUrl}}</span>
-        </p>
-        <a href="#" class="copy">
-          <img src="images/copy.png" alt="">
-        </a>
+    <script type="text/x-handlebars" id="binListTemplate">
+      <div class="block" id="binList">
+        <h2>Your Bins</h2>
+        <a class="button" id="newBinBttn" href="#"><strong>+</strong> New Bin</a>
+        <p>This list is based on bins created at your IP address.</p>
+        <ul class="binList">
+          {{#each this}}
+            <li class="binListItem">
+              <a class="binLink" href="#" data-id="{{this}}">{{this}}</a>
+            </li>
+          {{/ each}}
+        </ul>
       </div>
-      <table>
-        <tr>
-          <td>Created:</td><td>{{time_created}}</td>
-        </tr>
-        <tr>
-          <td>Count:</td><td>{{count}}</td>
-          
-        </tr>
-        <tr>
-          <td>Status:</td><td>{{status}}</td>
-        </tr>
-      </table>
-    </div>
-    
-  </script>
+    </script>
 
-  <script type="text/x-handlebars" id="reqListTemplate">
-    {{#each this}}
-    <div class="block">
-      <h3 class="method">{{method}}</h3>
-      <p class="path">{{path}}</p>
-      <p class="fromIp">from: {{ip}}</p>
-      <table class="requestDetails">
-        <tbody>
+    <script type="text/x-handlebars" id="binInfoTemplate">
+      <div class="block">
+        <h2>Your Bin</h2>
+        <a href="#" class="refresh">
+          <img src="images/refresh.png" alt="">
+        </a>
+        <div id="endpoint">
+          <p>
+            Your endpoint: <span>{{binUrl}}</span>
+          </p>
+          <a href="#" class="copy">
+            <img src="images/copy.png" alt="">
+          </a>
+        </div>
+        <table>
           <tr>
-            <td>
-              <h4>Body</h4>
-              <pre>{{body}}</pre>
-            </td>
-            <td>
-              <h4>Headers</h4>
-              <ul>
-                {{#each headers}}
-                  <li><strong>{{this.name}}:</strong> {{this.value}}</li>
-                {{/each}}
-              </ul>
-            </td>
+            <td>Created:</td><td>{{time_created}}</td>
           </tr>
-        </tbody>
-      </table>
-    </div>
-    {{/each}}
-  </script>
+          <tr>
+            <td>Count:</td><td>{{count}}</td>
 
-  <script src="javascripts/index.js"></script>
-</body>
+          </tr>
+          <tr>
+            <td>Status:</td><td>{{status}}</td>
+          </tr>
+        </table>
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" id="reqListTemplate">
+      {{#each this}}
+      <div class="block">
+        <h3 class="method">{{method}}</h3>
+        <p class="path">{{path}}</p>
+        <p class="fromIp">from: {{ip}}</p>
+        <table class="requestDetails">
+          <tbody>
+            <tr>
+              <td>
+                <h4>Body</h4>
+                <pre>{{body}}</pre>
+              </td>
+              <td>
+                <h4>Headers</h4>
+                <ul>
+                  {{#each headers}}
+                    <li><strong>{{this.name}}:</strong> {{this.value}}</li>
+                  {{/each}}
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {{/each}}
+    </script>
+
+    <script src="javascripts/index.js"></script>
+  </body>
 </html>
