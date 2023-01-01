@@ -20,8 +20,8 @@ app.get("/", (request, response) => {
 
 //Show all the bins
 app.get("/bins", async (request, response) => {
-  // const ip = request.headers['x-forwarded-for']; // use this on nginx
-  const ip = request.ip; // use this locally
+  const ip = request.headers['x-forwarded-for']; // use this on nginx
+  // const ip = request.ip; // use this locally
   const bins = await dataService.getBinsFromIp(ip);
   if (bins.length > 0) {
     response.status(200).json(bins);
@@ -71,8 +71,8 @@ app.post("/bins", async (request, response) => {
 
   try {
     const binId = uuidv4();
-    // const ip = request.headers['x-forwarded-for']; // use this for nginx
-    const ip = request.ip // use this locally
+    const ip = request.headers['x-forwarded-for']; // use this for nginx
+    // const ip = request.ip // use this locally
     await dataService.createBin(binId, ip);
     response.status(201).json({ binId: binId })
   } catch (err) {
